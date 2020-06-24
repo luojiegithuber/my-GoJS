@@ -8,11 +8,13 @@
 
 import go from 'gojs'
 import DemoOne from './DemoOne'
+import DemoTwo from './DemoTwo'
 
 export default {
   name: 'HelloWorld',
   components:{
     DemoOne,
+    DemoTwo
   },
   data () {
     return {
