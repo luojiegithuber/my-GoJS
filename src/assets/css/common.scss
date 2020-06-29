@@ -1,0 +1,16 @@
+$error-color:red;
+
+@mixin box-border($border-color: #000) {
+  border: 1px solid $border-color;
+}
+
+@mixin big-box {
+  width: 1000px;
+  height: 800px;
+  background-color: #fff;
+}
+
+@mixin icon-operate {
+    font-size: 24px ;
+    margin:5px 10px ;
+}
