@@ -1,10 +1,12 @@
 <template>
   <div id="demo">
     <blood-search-box></blood-search-box>
+    <div class="diagram-operate">
     <tool-bar></tool-bar>
     <button @click="canvasFullScreen">全屏放大</button>
     <button @click="canvasDownload">下载图片</button>
     <button @click="testGetNewData">请求数据并更新</button>
+    </div>
     <demo-three ref="demo3"></demo-three>
   </div>
 </template>

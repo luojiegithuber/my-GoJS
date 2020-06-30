@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="toolbar-justify">
       <a-checkbox-group @change="onCheckBoxChange">
         <a-checkbox value="A">
           过滤临时表
@@ -48,5 +48,10 @@ export default {
 .diagram-icons-list i{
     color:#00C1DE;
     @include icon-operate;
+}
+
+.toolbar-justify{
+    display: flex;
+    justify-content: space-between;
 }
 </style>

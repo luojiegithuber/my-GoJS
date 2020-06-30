@@ -18,6 +18,7 @@ export default {
       myDiagram:null,
       modelData:[], //节点数据
       modelLinks:[], //连线数据
+      treeStructure:[],//树结构映射
     }
   },
   mounted(){
@@ -62,15 +63,21 @@ export default {
 
       // 定义节点的外部形状
       GO(go.Shape, "Rectangle", // 形状为矩形
-        { fill: graygrad, stroke: "#D8D8D8",desiredSize: new go.Size(160, 50)},
-        new go.Binding("fill", "color")),
+        { fill: "white", stroke: "#696969",desiredSize: new go.Size(200, 50)},
+        new go.Binding("fill", "color"),
+        new go.Binding("stroke", "status",function(v){
+          return v==1?"#696969":"red";
+        })),
 
       GO(go.Panel,"Auto",
         // 定义节点的文本
         GO(go.TextBlock,
-          { margin: 10,height:40, font: "bold 15px Helvetica, bold Arial, sans-serif" },
+          { margin: 10,height:40,stroke:"#696969", font: "bold 15px Helvetica, bold Arial, sans-serif" },
           //把TextBlock.text 绑在 Node.data.key上
-          new go.Binding("text", "key")
+          new go.Binding("text", "key"),
+          new go.Binding("stroke", "status",function(v){
+            return v==1?"#696969":"red";
+          })
         ),
         
         //new go.Binding("itemArray", "reasonsList"),// 汉字说明
@@ -94,7 +101,13 @@ export default {
         { visible: true },
         new go.Binding("visible", "isExpand",function(v){ return !v; }),
 
-        GO(go.TextBlock, "5+"),
+        {
+
+          "ButtonBorder.fill": "white",
+          "ButtonBorder.stroke": "#00C1DE",
+        },
+
+        GO(go.TextBlock, "5+",{stroke:"#00C1DE"}),
       ),
 
 
@@ -108,15 +121,31 @@ export default {
           return v=="right"?alignmentFocusLeft:alignmentFocusRight
         }),
         { visible: true },
-        // { width: 50,
-        //   "ButtonIcon.stroke": "balck",
-        //   "ButtonBorder.fill": "#CCFFFF",
-        //   "ButtonBorder.stroke": "transparent",
-        //   "_buttonFillOver": "pink",
-        //   "_buttonStrokeOver": "black"
-        // },
+        { 
+          height:20,
+          width:20,
+          "ButtonIcon.stroke": "#00C1DE",
+          "ButtonBorder.fill": "white",
+          "ButtonBorder.stroke": "#00C1DE",
+        },
         //GO(go.TextBlock, "5"),
-      )
+      ),
+
+      {
+        contextMenu:     // define a context menu for each node
+          GO("ContextMenu",  // that has one button
+            GO("ContextMenuButton",
+              GO(go.TextBlock, "查看血缘"),
+              { click: ()=>{console.log("1")} }),
+            GO("ContextMenuButton",
+              GO(go.TextBlock, "查看元数据"),
+              { click: ()=>{console.log("2")} }),
+            GO("ContextMenuButton",
+              GO(go.TextBlock, "查看表名"),
+              { click: ()=>{console.log("3")} }),
+            // more ContextMenuButtons would go here
+          )  // end Adornment
+      }
 
     );
     
@@ -127,44 +156,75 @@ export default {
       { routing: go.Link.Orthogonal, corner: 5 ,visible:true},
       new go.Binding("visible", "visible"),
       GO(go.Shape, {
-         strokeWidth: 1, stroke: "#333" },
+         strokeWidth: 1, stroke: "#A9A9A9" },
          new go.Binding("stroke", "color"),   
+      ),
+      GO(go.Shape,   // the arrowhead
+        { fromArrow: "Backward", fill: "#A9A9A9",stroke:"#A9A9A9" },
+        new go.Binding("stroke", "color"), 
+        new go.Binding("fill", "color"),
+
+        //决定箭头方向
+        {visible:true},
+        new go.Binding("visible", "dir",function(v){
+          return v=="left"? true : false
+        }),
+      ),
+      GO(go.Shape,   // the arrowhead
+        { toArrow: "Standard", fill: "#A9A9A9",stroke:"#A9A9A9" },
+        new go.Binding("stroke", "color"), 
+        new go.Binding("fill", "color"),
+
+        //决定箭头方向
+        {visible:true},
+        new go.Binding("visible", "dir",function(v){
+          return v=="left"? false : true
+        }),
       ),
       
     );
 
     //Gruop样式
     myDiagram.groupTemplate = GO(go.Group, "Auto",
-    { layout: GO(go.GridLayout, { wrappingColumn: 1 }) },
+    { layout: GO(go.GridLayout, { 
+          wrappingColumn: 1,
+        }) },
       GO(go.Shape, "Rectangle",
-        { fill: "#00C1DE" }),
+        { fill: "white",stroke:"#00C1DE" }),
+
       GO(go.Panel, "Vertical",
-        
-        { margin: 5,
-          defaultAlignment: go.Spot.Left },
+        { margin: 0,
+          defaultAlignment: go.Spot.Left, },
         GO(go.Panel, "Horizontal",
+         { background: "#00C1DE",width:200},
+
           GO("SubGraphExpanderButton",
-            { margin: new go.Margin(0, 3, 5, 0) }),
+          { margin: 5},
+          { alignment: go.Spot.Right, alignmentFocus: go.Spot.Right}
+          ),
+
           GO(go.TextBlock, 
-          {stroke:"white"},
-          new go.Binding("text", "key",function(v) { return v + '表'; }))
+          { margin: 5, stroke: "white", font: "bold 13px sans-serif" },
+          new go.Binding("text", "key",function(v) { return v + '表'; })),
+          
         ),
-        GO(go.Placeholder)
+        GO(go.Placeholder, { padding: 5, alignment: go.Spot.TopLeft })
       )
     );
+
+
 
     //数据和连线Model
     // 在model的数据中, 每个节点数据的值都是由一个JS对象来表示:
     var model = [
-        { key: "Root", color: lavgrad },
-        { key: "1", parent: "Root", dir: "left", color: bluegrad },
-        { key: "2", parent: "Root", dir: "left" },
-        { key: "3", parent: "Root", dir: "left" },
-        { key: "4", parent: "Root", dir: "left", color: bluegrad ,
-          alignment:alignmentLeft,},
-        { key: "5", parent: "4" },
-        { key: "6", parent: "4" },
-        { key: "7", parent: "Root" , dir: "left"},
+        { key: "Root", color: "#00C1DE",stroke:"white" },
+        { key: "1", parent: "Root", dir: "left",group:"应用" },
+        { key: "2", parent: "Root", dir: "left" ,group:"应用"},
+        { key: "3", parent: "Root", dir: "left" ,group:"应用"},
+        { key: "4", parent: "Root", dir: "left",group:"应用",status:0},
+        { key: "5", parent: "4" ,dir:"left",group:"应用2"},
+        { key: "6", parent: "4" ,dir:"left",group:"应用2"},
+        { key: "7", parent: "Root" , dir: "left",group:"应用"},
         { key: "8", parent: "Root",  group:"GP",dir: "right",},
         { key: "15", parent: "Root",  group:"GP", dir: "right"},
         { key: "9", parent: "Root", group:"HIVE", dir:"right"},
@@ -177,12 +237,14 @@ export default {
         { key: "17", parent: "13" , group:"HIVE2-3"},
         //{ key: "18", parent: "15" , group:"GP2-1"},
         //{ key: "19", parent: "15" , group:"GP2-1"},
-        { key: "GP", parent: "Root", isGroup: true, parentGroup:"" },
+        { key: "GP", parent: "Root", isGroup: true, parentGroup:"", dir:"right" },
         //{ key: "GP2-1", parent: "15", isGroup: true, parentGroup:"GP" },
-        { key: "HIVE", parent: "Root", isGroup: true, parentGroup:""},
-        { key: "HIVE2-1", parent: "9",  isGroup: true, parentGroup:"HIVE" },
-        { key: "HIVE2-2", parent: "9",  isGroup: true, parentGroup:"HIVE" },
-        { key: "HIVE2-3", parent: "13",  isGroup: true, parentGroup:"HIVE" },
+        { key: "HIVE", parent: "Root", isGroup: true, parentGroup:"", dir:"right" },
+        { key: "HIVE2-1", parent: "9",  isGroup: true, parentGroup:"HIVE", dir:"right"  },
+        { key: "HIVE2-2", parent: "9",  isGroup: true, parentGroup:"HIVE", dir:"right"  },
+        { key: "HIVE2-3", parent: "13",  isGroup: true, parentGroup:"HIVE", dir:"right"  },
+        { key: "应用", parent: "Root",  isGroup: true, parentGroup:"",dir:"left" },
+        { key: "应用2", parent: "4",  isGroup: true, parentGroup:"应用",dir:"left",status:0 },
       ];
 
 
@@ -258,9 +320,9 @@ export default {
         let data = modelData[i];
         
         //之后这里要改成isGroup的判断
-        //需求的可见线
+        //需求的可见线,有个dir属性
         if (!data.group){
-          links.push({ from: data.parent, to: data.key, visible:true });
+          links.push({ from: data.parent, to: data.key, visible:true, dir:data.dir });
         }
         
         //不可见的线，用于树的血脉形成
@@ -270,7 +332,7 @@ export default {
 
         //组和组连接起来，挂入布局树上
         if (data.parentGroup){
-          links.push({ from: data.parentGroup, to: data.key, visible:true, color:"rgba(125,0,125,1)"});
+          links.push({ from: data.parentGroup, to: data.key, visible:true, color:"rgba(125,0,125,0)"});
         }
 
       };//for  
