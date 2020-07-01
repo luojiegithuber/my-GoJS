@@ -372,8 +372,10 @@ export default {
 @import '../assets/css/common.scss';
 
 #demo3{
-  @include box-border;
-  @include big-box;
+  //@include box-border;
+  // @include big-box;
+  flex-grow:1;
+  background-color: #fff;
 }
 
 </style>

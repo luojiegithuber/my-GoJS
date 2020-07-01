@@ -21,12 +21,11 @@
           查看首层
         </a-checkbox>
       </a-checkbox-group>
-
       <div class="diagram-icons-list">
-          <a-icon type="fullscreen" />
+          <a-icon type="fullscreen" @click="canvasFullScreen" />
           <a-icon type="redo" />
-          <a-icon type="download" />
-          <a-icon type="plus-square" />
+          <a-icon type="download" @click="canvasDownload" />
+          <a-icon type="plus-square" @click="testGetNewData"/>
           <a-icon type="minus-square" />
           <a-icon type="question-circle" />
       </div>
@@ -37,6 +36,18 @@ export default {
   methods: {
     onCheckBoxChange(checkedValues) {
       console.log('checked = ', checkedValues);
+    },
+
+    canvasFullScreen(){
+        this.$parent.canvasFullScreen();
+    },
+
+    canvasDownload(){
+        this.$parent.canvasDownload();
+    },
+
+    testGetNewData(){
+        this.$parent.testGetNewData();
     },
   },
 };
@@ -51,7 +62,11 @@ export default {
 }
 
 .toolbar-justify{
+    //@include box-border;
     display: flex;
     justify-content: space-between;
+    background-color: #fff;
+
+    padding: 5px;
 }
 </style>
