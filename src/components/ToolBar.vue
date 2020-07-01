@@ -27,7 +27,7 @@
           <a-icon type="download" @click="canvasDownload" />
           <a-icon type="plus-square" @click="testGetNewData"/>
           <a-icon type="minus-square" />
-          <a-icon type="question-circle" />
+          <a-icon type="question-circle" @click="testChangeDiagram"/>
       </div>
   </div>
 </template>
@@ -49,6 +49,10 @@ export default {
     testGetNewData(){
         this.$parent.testGetNewData();
     },
+
+    testChangeDiagram(){
+ 
+    }
   },
 };
 </script>

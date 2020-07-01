@@ -38,6 +38,7 @@ export default {
     
   },
   methods:{
+
     //测试，请求新的节点数据 18 19
     testGetNewData(){
       this.$refs.demo3.getNewData();

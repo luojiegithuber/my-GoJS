@@ -21,6 +21,20 @@ export default {
       treeStructure:[],//树结构映射
     }
   },
+  beforeCreate(){
+
+    //兄弟组件传值
+    //监听抽屉的滑动，以免滑梯滑动之后canvas的面积不会被改变
+    this.bus.$on("toDiagramForArea",msg=>{
+      setTimeout(()=>{
+          this.myDiagram.requestUpdate();
+      },1000)
+
+    })
+
+    
+  },
+
   mounted(){
     //gojs中可以直接取到id名（如‘demo1’）vue中不可以，所以用refs来取dom
     let myDiagram = 
@@ -54,6 +68,7 @@ export default {
 
       //Node参数配置
       { 
+        selectionAdorned: false,//去掉丑陋的蓝色选择框
         isShadowed: false,// 是否投影
         locationSpot: go.Spot.Center,// Node.location 定位的基准点设置在每个节点的中心处
         scale:0.8,    //初始视图大小比例
@@ -67,7 +82,16 @@ export default {
         new go.Binding("fill", "color"),
         new go.Binding("stroke", "status",function(v){
           return v==1?"#696969":"red";
-        })),
+        }),
+
+        //根据选择动态改变节点的框颜色
+        new go.Binding("stroke", "isSelected", function(sel,s) {
+          if (sel) return "#00C1DE";
+          else if(s.Jj.jb.status!='0') return "#696969";
+          else return "red";
+        }).ofObject("")
+        
+        ),
 
       GO(go.Panel,"Auto",
         // 定义节点的文本
@@ -77,7 +101,8 @@ export default {
           new go.Binding("text", "key"),
           new go.Binding("stroke", "status",function(v){
             return v==1?"#696969":"red";
-          })
+          }),
+
         ),
         
         //new go.Binding("itemArray", "reasonsList"),// 汉字说明

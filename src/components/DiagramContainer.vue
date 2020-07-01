@@ -65,7 +65,7 @@ a {
 }
 
 .diagram-container{
-  @include box-border;
+  //@include box-border;
   @include percentage-fill(100%,95%);
 
   display: flex;
