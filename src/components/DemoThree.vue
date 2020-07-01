@@ -26,8 +26,12 @@ export default {
     //兄弟组件传值
     //监听抽屉的滑动，以免滑梯滑动之后canvas的面积不会被改变
     this.bus.$on("toDiagramForArea",msg=>{
+
+      let time = setInterval(()=>{
+        this.myDiagram.requestUpdate();
+      },10)
       setTimeout(()=>{
-          this.myDiagram.requestUpdate();
+        clearInterval(time);
       },1000)
 
     })
