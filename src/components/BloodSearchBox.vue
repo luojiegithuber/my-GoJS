@@ -46,9 +46,8 @@ export default {
 @import '../assets/css/common.scss';
 
 #blood-search-box{
-    // @include box-border;
     padding:10px 0px;
-    background-color: #fff;
+    //background-color: #fff;
     display: flex;
     justify-content:center;
 }
