@@ -6,7 +6,7 @@
       </div>
 
       <!--作业详情部分-->
-      <div>所属任务id：<span style="color:#00C1DE;cursor:pointer;">{{taskID}}33098</span></div>
+      <div>所属任务id：<span style="color:#00C1DE;cursor:pointer;">33098</span></div>
       <div>运行状态：成功</div>
       <div>第3行：夜来风雨声</div>
       <div>第4行：花落知多少</div>
@@ -23,7 +23,7 @@ export default {
   props: {
     tableDetail: {
       type: Object,
-      default: () => () => {}
+      default: null
     },
     load: {
       type: Boolean,

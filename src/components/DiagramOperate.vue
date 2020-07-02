@@ -2,9 +2,10 @@
   <div id="diagram-operate">
 
     <tool-bar></tool-bar>
-    <!-- <button @click="canvasFullScreen">全屏放大</button>
-    <button @click="canvasDownload">下载图片</button>
-    <button @click="testGetNewData">请求数据并更新</button> -->
+    <a-input-search
+      placeholder="支持名称和任务id精准搜索" 
+      style="width: 500px" 
+      @search="onSearch" />
     <demo-three ref="demo3"></demo-three>
 
   </div>
@@ -38,6 +39,7 @@ export default {
     
   },
   methods:{
+    onSearch(){},
 
     //测试，请求新的节点数据 18 19
     testGetNewData(){
@@ -146,7 +148,7 @@ export default {
     makeBlob() {
       this.myDiagram = this.$refs.demo3.myDiagram;
       var blob = this.myDiagram.makeImageData({ 
-        //background: "white", 
+        background: "white", 
         returnType: "blob",
         callback: this.myCallback
       });
@@ -180,7 +182,7 @@ a {
     flex-grow: 1;
     display: flex;
     flex-direction:column;
-
+    background-color: #fff;
     margin-right: 5px;
     
 }

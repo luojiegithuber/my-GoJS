@@ -1,6 +1,8 @@
 <template>
   <div id="demo">
-    <blood-search-box></blood-search-box>
+    <div style="background-color:#fff">
+      <blood-search-box></blood-search-box>
+    </div>
     <div class="diagram-container">
       <diagram-operate></diagram-operate>
       <blood-sidebar>信息侧边栏</blood-sidebar>
@@ -66,10 +68,10 @@ a {
 
 .diagram-container{
   //@include box-border;
-  @include percentage-fill(100%,95%);
+  @include percentage-fill(100%,96%);
 
   display: flex;
-  padding: 5px;
+  padding: 5px 0px;
 }
 
 #demo{

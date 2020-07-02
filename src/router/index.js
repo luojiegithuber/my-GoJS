@@ -8,12 +8,12 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/DiagramContainer',
+      path: '/',
       name: 'DiagramContainer',
       component: DiagramContainer
     },
     {
-      path: '/',
+      path: '/BloodHome',
       name: 'BloodHome',
       component: BloodHome
     },

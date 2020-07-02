@@ -42,7 +42,8 @@ export default {
     //gojs中可以直接取到id名（如‘demo1’）vue中不可以，所以用refs来取dom
     let myDiagram = 
     GO(go.Diagram, this.$el, 
-      {
+      
+      {  
         "initialContentAlignment": go.Spot.Center,//图表居中显示
         "isEnabled":true,                         //是否可以拖拽
         "undoManager.isEnabled": true,            // 打开Ctrl-Z撤销和Ctrl-Y重做功能
@@ -404,6 +405,12 @@ export default {
   // @include big-box;
   flex-grow:1;
   background-color: #fff;
+}
+
+
+#demo3 canvas {
+  outline: none;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
 }
 
 </style>
