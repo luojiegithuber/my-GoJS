@@ -4,7 +4,10 @@
         <img class="title-icon" src="../assets/icons/血缘.png"/>
         <span style="color:#00C1DE;font-size:2em;font-weight:bold;">&nbsp;血缘查询</span>
     </div>
-    <blood-search-box></blood-search-box>
+    <div style="display:flex;align-items:center">
+      <blood-search-box></blood-search-box>
+      <a-button type="primary" style="margin-left:10px;background-color:#00C1DE;border-color:#00C1DE;">增加</a-button>
+    </div>
   </div>
 </template>
 

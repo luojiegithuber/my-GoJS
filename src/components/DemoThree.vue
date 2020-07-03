@@ -64,6 +64,7 @@ export default {
     GO(go.Diagram, el, 
       
       { 
+        "draggingTool.isEnabled": false,//禁止拖拽
         "maxSelectionCount": 1,
         "initialContentAlignment": go.Spot.Center,//图表居中显示
         "isEnabled":true,                         //是否可以拖拽
@@ -76,11 +77,6 @@ export default {
         })
       }
     );
-    // define all of the gradient brushes
-    var graygrad = GO(go.Brush, "Linear", { 0: "#F5F5F5", 1: "#F1F1F1" });
-    var bluegrad = GO(go.Brush, "Linear", { 0: "#CDDAF0", 1: "#91ADDD" });
-    var yellowgrad = GO(go.Brush, "Linear", { 0: "#FEC901", 1: "#FEA200" });
-    var lavgrad = GO(go.Brush, "Linear", { 0: "#EF9EFA", 1: "#A570AD" });
 
     var alignmentLeft = go.Spot.Left;
     var alignmentRight = go.Spot.Right;
@@ -305,7 +301,7 @@ export default {
 
 
     //———————————【事件监听】——————————————
-
+  
 
     //监听节点扩展事件
     myDiagram.addDiagramListener("TreeExpanded",
