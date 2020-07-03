@@ -21,6 +21,7 @@ import ToolBar from './ToolBar';
 import DiagramOperate from './DiagramOperate';
 //import InfoSidebar from './InfoSidebar';
 import BloodSidebar from './BloodSidebar';
+import NodeContextMenu from './NodeContextMenu';
 
 export default {
   name: 'HelloWorld',
@@ -32,6 +33,7 @@ export default {
     ToolBar,
     DiagramOperate,
     BloodSidebar,
+    NodeContextMenu,
   },
   data () {
     return {

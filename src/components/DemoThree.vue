@@ -1,7 +1,8 @@
 <template>
-  <div id="demo3">
-    demo3
-  </div>
+    <div id="demo3-container">
+      <node-context-menu v-show="isShowContextMenu" ref="contextMenu"></node-context-menu>
+      <div id="demo3" ref="demo3"></div>
+    </div>
 </template>
 
 <script>
@@ -9,10 +10,17 @@
 import go from 'gojs';
 import {DoubleTreeLayout} from '@/gojs/DoubleTreeLayout.js';
 
+import NodeContextMenu from './NodeContextMenu';
+
 const GO = go.GraphObject.make; //定义模版
 
 export default {
   name: 'demo3',
+   components:{
+
+    NodeContextMenu,
+
+  },
   data () {
     return {
       myDiagram:null,
@@ -20,6 +28,7 @@ export default {
       modelLinks:[], //连线数据
       treeStructure:[],//树结构映射
       curSelectedNode:null,//当前选中的节点
+      isShowContextMenu:false,
     }
   },
   beforeCreate(){
@@ -40,11 +49,21 @@ export default {
   },
 
   mounted(){
+    let that = this;
+
+    //点击左键 自定义菜单消失
+    document.onclick=function () {
+      that.isShowContextMenu = false;
+    }
+
+
     //gojs中可以直接取到id名（如‘demo1’）vue中不可以，所以用refs来取dom
+    let el = (this.$refs.demo3)
+
     let myDiagram = 
-    GO(go.Diagram, this.$el, 
+    GO(go.Diagram, el, 
       
-      {  
+      { 
         "maxSelectionCount": 1,
         "initialContentAlignment": go.Spot.Center,//图表居中显示
         "isEnabled":true,                         //是否可以拖拽
@@ -165,16 +184,7 @@ export default {
       {
         contextMenu:     // define a context menu for each node
           GO("ContextMenu",  // that has one button
-            GO("ContextMenuButton",
-              GO(go.TextBlock, "查看血缘"),
-              { click: ()=>{console.log("1")} }),
-            GO("ContextMenuButton",
-              GO(go.TextBlock, "查看元数据"),
-              { click: ()=>{console.log("2")} }),
-            GO("ContextMenuButton",
-              GO(go.TextBlock, "查看表名"),
-              { click: ()=>{console.log("3")} }),
-            // more ContextMenuButtons would go here
+           {click:()=>{console.log("nm")}}
           )  // end Adornment
       }
 
@@ -295,7 +305,7 @@ export default {
 
 
     //———————————【事件监听】——————————————
-    let that = this;
+
 
     //监听节点扩展事件
     myDiagram.addDiagramListener("TreeExpanded",
@@ -309,7 +319,16 @@ export default {
             console.log(e.subject.part.data);
             that.curSelectedNode = e.subject.part;
         });
+
+    //监听节点右键点击事件
+    myDiagram.addDiagramListener("ObjectContextClicked", function(e) {
+
+            that.rightClickNode(e.subject.part,e);
+            that.curSelectedNode = e.subject.part;
+            
+    });
     
+    //监听全屏放大事件
     document.addEventListener('fullscreenchange',function(){
       if(document.fullscreenElement){
         //进入全屏
@@ -323,6 +342,28 @@ export default {
 
 
   methods:{
+
+    hideMenu(){
+      this.isShowContextMenu = false;
+    },
+
+    //节点的右键点击事件，调出菜单栏
+    rightClickNode(node,e){
+
+      if(!node.data.group){
+        console.log("你点击的不是节点");
+        return false;
+      }
+
+			e = window.event;
+
+			let menu_x=e.clientX;
+      let menu_y=e.clientY;
+
+      this.isShowContextMenu = true
+      this.$refs.contextMenu.positioning(menu_x,menu_y)
+    },
+
     
     //取消选中的节点
     cancelSelect(){
@@ -414,10 +455,14 @@ export default {
 
 <style scoped lang='scss'>
 @import '../assets/css/common.scss';
+#demo3-container{
+  flex-grow:1;
+}
 
 #demo3{
   //@include box-border;
   // @include big-box;
+  height:100%;
   flex-grow:1;
   background-color: #fff;
 }
