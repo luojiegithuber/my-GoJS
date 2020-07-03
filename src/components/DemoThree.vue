@@ -19,6 +19,7 @@ export default {
       modelData:[], //节点数据
       modelLinks:[], //连线数据
       treeStructure:[],//树结构映射
+      curSelectedNode:null,//当前选中的节点
     }
   },
   beforeCreate(){
@@ -44,6 +45,7 @@ export default {
     GO(go.Diagram, this.$el, 
       
       {  
+        "maxSelectionCount": 1,
         "initialContentAlignment": go.Spot.Center,//图表居中显示
         "isEnabled":true,                         //是否可以拖拽
         "undoManager.isEnabled": true,            // 打开Ctrl-Z撤销和Ctrl-Y重做功能
@@ -286,8 +288,15 @@ export default {
 
     this.myDiagram = myDiagram;//Vue存储
     
-    
+    //让根节点一开始处于选中状态
+    let RootNode = this.myDiagram.findNodeForKey("Root");
+    RootNode.isSelected = "true";
+    this.curSelectedNode = RootNode;
+
+
     //———————————【事件监听】——————————————
+    let that = this;
+
     //监听节点扩展事件
     myDiagram.addDiagramListener("TreeExpanded",
       function(e,obj) {
@@ -295,9 +304,10 @@ export default {
         console.log(e.subject.first().jb);
     });
 
-    //监听节点选择事件
+    //监听节点点击选择事件
     myDiagram.addDiagramListener("ObjectSingleClicked", function(e) {
             console.log(e.subject.part.data);
+            that.curSelectedNode = e.subject.part;
         });
     
     document.addEventListener('fullscreenchange',function(){
@@ -313,6 +323,11 @@ export default {
 
 
   methods:{
+    
+    //取消选中的节点
+    cancelSelect(){
+      this.curSelectedNode.isSelected = false;
+    },
 
 
     clickTreeExpanderButton(e,obj) {
@@ -406,7 +421,6 @@ export default {
   flex-grow:1;
   background-color: #fff;
 }
-
 
 #demo3 canvas {
   outline: none;

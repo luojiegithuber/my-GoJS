@@ -31,15 +31,52 @@ export default {
   },
   data () {
     return {
-      fullscreen:false, //当前是否全屏
-      myDiagram:null, //从子节点获得图表实例
+      fullscreen: false, //当前是否全屏
     }
   },
-  mounted(){
-    
+
+  computed: {
+
+      //响应绑定子组件的图表
+      myDiagram: function() {
+          return this.$refs.demo3.myDiagram;
+      }
   },
-  methods:{
-    onSearch(){},
+  mounted() {
+
+  },
+  methods: {
+
+    //在画布里面寻找节点  
+    onSearch(value){
+
+        let key = value;
+        
+        try{
+        
+            //找到目标节点
+            let goalNode = this.myDiagram.findNodeForKey(key);
+
+            //但是我们必须要取消掉之前选中的节点
+            this.$refs.demo3.cancelSelect();
+
+            //将搜索的节点高亮显示
+            goalNode.isSelected = "true";
+
+            //然后将我们搜索的节点变成子节点的curSelectedNode————当前选中节点
+            this.$refs.demo3.curSelectedNode = goalNode;
+
+            //将你搜索的节点居中
+            this.myDiagram.commandHandler.scrollToPart(goalNode);
+
+        }catch(e){
+            console.log("异常：",e)
+            this.$message.error('查找失败');
+        }
+
+
+    },
+
 
     //测试，请求新的节点数据 18 19
     testGetNewData(){
@@ -48,7 +85,6 @@ export default {
 
     //全屏放大
     canvasFullScreen(){
-      console.log("点击放大按钮");
       this.launchFullScreen();
     },
 

@@ -3,8 +3,8 @@
   <div class="blood-drawer" :class="{drawer_extend: isExtend, drawer_shrink: isShrink}">
     
     <div class="drawer-button" @click="slide"> 
-        <a-icon v-show="isShrink" type="caret-right"  />
-        <a-icon v-show="isExtend" type="caret-left" />
+        <a-icon v-show="isExtend" type="caret-right"  />
+        <a-icon v-show="isShrink" type="caret-left" />
     </div>
     
     <div style="overflow:hidden" > 
