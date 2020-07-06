@@ -1,13 +1,28 @@
 <template>
   <div id="diagram-operate">
 
-    <tool-bar></tool-bar>
+    <tool-bar :is-full-screen = isFullScreen></tool-bar>
+    <div style="display:flex;align-items:center">
     <a-input-search
-      placeholder="支持名称和任务id精准搜索" 
-      style="width: 500px" 
-      @search="onSearch" />
+    placeholder="支持名称和任务id精准搜索" 
+    style="width: 500px;margin-right:32px" 
+    @search="onSearch" />
+
+    
+      <span style="margin-right:16px;color:#666666">
+        <img style="width:16px;height:16px" src="../assets/icons/icon-rising.png"/>
+        直接上游表数：5
+      </span>
+      
+      <span style="margin-right:16px;color:#666666">
+        <img style="width:16px;height:16px" src="../assets/icons/icon-falling.png"/>
+        直接下游表数：5
+      </span>
+    </div>
+
     <demo-three ref="demo3"></demo-three>
 
+  
   </div>
 </template>
 
@@ -31,7 +46,7 @@ export default {
   },
   data () {
     return {
-      fullscreen: false, //当前是否全屏
+      isFullScreen: false, //当前是否全屏
     }
   },
 
@@ -88,59 +103,10 @@ export default {
       this.launchFullScreen();
     },
 
-    //进入全屏1
-    viewFullScreen(show) {
-      if (show === undefined) show = !isFullScreen();
-      if (show) {
-        if (document.body.requestFullscreen) document.body.requestFullscreen();
-        else if (document.body.webkitRequestFullScreen) document.body.webkitRequestFullScreen();
-        else if (document.body.mozRequestFullScreen) document.body.mozRequestFullScreen();
-        else if (document.body.msRequestFullscreen) document.body.msRequestFullscreen();
-      } else {
-        if (document.exitFullscreen) document.exitFullscreen();
-        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-        else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
-        else if (document.msExitFullscreen) document.msExitFullscreen();
-      }
-    },
-
-    isFullScreen() {
-      return !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement);
-    },
     
-    //进入全屏2
-    screen(){
-      // let element = document.documentElement;//设置后就是我们平时的整个页面全屏效果
-      let element = document.getElementById('demo3');//设置后就是   id==con_lf_top_div 的容器全屏
-        if (this.fullscreen) {
-          if (document.exitFullscreen) {
-            document.exitFullscreen();
-          } else if (document.webkitCancelFullScreen) {
-            document.webkitCancelFullScreen();
-          } else if (document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
-          } else if (document.msExitFullscreen) {
-            document.msExitFullscreen();
-          }
-        } else {
-          if (element.requestFullscreen) {
-            element.requestFullscreen();
-          } else if (element.webkitRequestFullScreen) {
-            element.webkitRequestFullScreen();
-          } else if (element.mozRequestFullScreen) {
-            element.mozRequestFullScreen();
-          } else if (element.msRequestFullscreen) {
-            // IE11
-            element.msRequestFullscreen();
-          }
-        }
-        this.fullscreen = !this.fullscreen;
-
-    },
-    
-    //进入全屏3
+    //进入全屏
     launchFullScreen() {
-      let element = document.getElementById('demo3');
+      let element = document.getElementById('diagram-operate');
 
       if(element.requestFullscreen) {
         element.requestFullscreen();
@@ -151,8 +117,24 @@ export default {
       } else if(element.msRequestFullscreen) {
         element.msRequestFullscreen();
       }
+
+      this.isFullScreen = !this.isFullScreen;
     },
     
+    exitFullscreen() {
+      let element = document.getElementById('diagram-operate');
+
+      if(document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if(document.mozExitFullScreen) {
+        document.mozExitFullScreen();
+      } else if(document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      }
+
+      this.isFullScreen = !this.isFullScreen;
+    },
+
     //下载图表
     canvasDownload(){
       this.makeBlob();
@@ -220,6 +202,8 @@ a {
     flex-direction:column;
     background-color: #fff;
     margin-right: 5px;
+
+    padding: 5px;
     
 }
 

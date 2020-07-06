@@ -1,6 +1,8 @@
 <template>
   <div id="demo">
-    <div style="background-color:#fff">
+    <div style="background-color:#fff;padding:10px 0px;margin:10px 0px;display:flex;justify-content:center;align-items:center;">
+      
+      <div class="title-icon"/>
       <blood-search-box></blood-search-box>
     </div>
     <div class="diagram-container">
@@ -70,7 +72,7 @@ a {
 
 .diagram-container{
   //@include box-border;
-  @include percentage-fill(100%,96%);
+  @include percentage-fill(100%,90%);
 
   display: flex;
   padding: 5px 0px;
@@ -78,5 +80,18 @@ a {
 
 #demo{
   @include percentage-fill;
+}
+
+.title-icon{
+    @include title-icon;
+    border-radius:25px;
+    background-image: url("../assets/icons/血缘.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size:70%;
+    
+    margin-right: 15px;
+    box-shadow: 0px 0px 2px 2px rgba($color: #8b8b8b, $alpha: 0.1);
+
 }
 </style>

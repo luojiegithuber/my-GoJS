@@ -2,27 +2,21 @@
   <div class="toolbar-justify">
       <a-checkbox-group @change="onCheckBoxChange">
         <a-checkbox value="A">
-          过滤临时表
-        </a-checkbox>
-
-        <a-checkbox value="B">
-          过滤视图
-        </a-checkbox>
-
-        <a-checkbox value="C">
           我负责的
         </a-checkbox>
 
-        <a-checkbox value="D">
-          查看应用
+        <a-checkbox value="B">
+          临时表
         </a-checkbox>
 
-        <a-checkbox value="E">
-          查看首层
+        <a-checkbox value="C">
+          视图
         </a-checkbox>
+
       </a-checkbox-group>
       <div class="diagram-icons-list">
-          <a-icon type="fullscreen" @click="canvasFullScreen" />
+          <a-icon v-show="!isFullScreen" type="fullscreen" @click="canvasFullScreen" />
+          <a-icon v-show="isFullScreen" type="fullscreen-exit" @click="canvasFullScreen"/>
           <a-icon type="redo" />
           <a-icon type="download" @click="canvasDownload" />
           <a-icon type="plus-square" @click="testGetNewData"/>
@@ -33,13 +27,25 @@
 </template>
 <script>
 export default {
+  props: {
+    isFullScreen: {
+      type: Boolean,
+      default: false
+    },
+  },
+
   methods: {
     onCheckBoxChange(checkedValues) {
       console.log('checked = ', checkedValues);
     },
 
     canvasFullScreen(){
-        this.$parent.canvasFullScreen();
+        if(!this.isFullScreen){
+          this.$parent.launchFullScreen();
+        }else{
+          this.$parent.exitFullscreen();
+        }
+
     },
 
     canvasDownload(){

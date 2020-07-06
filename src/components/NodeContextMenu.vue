@@ -111,11 +111,12 @@ export default {
 @import '../assets/css/common.scss';
 
 .node-context-menu{
-    @include box-border(#D3D3D3);
+    //@include box-border(#D3D3D3);
     width:100px;
     position:absolute;
 
     z-index: 1000;
+    box-shadow: 0px 0px 5px 5px rgba($color: #000000, $alpha: 0.1);
 }
 
 .context-menu {
@@ -124,6 +125,7 @@ export default {
 }
 
 .context-menu li {
+    height: 30px;
     width: 100%;
     padding:6px 10px;
 
@@ -136,7 +138,8 @@ export default {
 }
 
 .context-menu li:hover {
-    background: #CDECFE;
+    background: #e6f6ff;
+    color: #00C1DE;
 }
 
 

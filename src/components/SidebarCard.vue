@@ -33,8 +33,6 @@ export default {
       type: String,
       default: '' 
     }
-
-    
   },
   computed: {
 

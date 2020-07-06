@@ -5,7 +5,8 @@
       <a-input 
       placeholder="输入hive/关系型数据库/GP/KYLIN/HBASE表名精准搜索" 
       :value="content"
-      style="width:500px"
+      
+      style="width:400px"
       />
 
       <a-button 
@@ -50,6 +51,7 @@ export default {
     //background-color: #fff;
     display: flex;
     justify-content:center;
+    width:600px;
 }
 
 </style>

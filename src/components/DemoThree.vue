@@ -66,7 +66,7 @@ export default {
       { 
         "draggingTool.isEnabled": false,//禁止拖拽
         "maxSelectionCount": 1,
-        "initialContentAlignment": go.Spot.Center,//图表居中显示
+        "initialContentAlignment": go.Spot.Left,//图表居中显示
         "isEnabled":true,                         //是否可以拖拽
         "undoManager.isEnabled": true,            // 打开Ctrl-Z撤销和Ctrl-Y重做功能
         "toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom, //启用视图放大缩小
@@ -99,16 +99,16 @@ export default {
 
       // 定义节点的外部形状
       GO(go.Shape, "Rectangle", // 形状为矩形
-        { fill: "white", stroke: "#696969",desiredSize: new go.Size(200, 50)},
+        { fill: "#f3f8fc", stroke: "#fff",desiredSize: new go.Size(200, 50)},
         new go.Binding("fill", "color"),
         new go.Binding("stroke", "status",function(v){
-          return v==1?"#696969":"red";
+          return v==1?"#fff":"red";
         }),
 
         //根据选择动态改变节点的框颜色
         new go.Binding("stroke", "isSelected", function(sel,s) {
           if (sel) return "#00C1DE";
-          else if(s.Jj.jb.status!='0') return "#696969";
+          else if(s.Jj.jb.status!='0') return "#fff";
           else return "red";
         }).ofObject("")
         
@@ -241,7 +241,7 @@ export default {
           ),
 
           GO(go.TextBlock, 
-          { margin: 5, stroke: "white", font: "bold 13px sans-serif" },
+          { margin: 5, stroke: "white", font: " 13px sans-serif" },
           new go.Binding("text", "key",function(v) { return v + '表'; })),
           
         ),
@@ -465,7 +465,7 @@ export default {
 
 #demo3 canvas {
   outline: none;
-  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 1);
 }
 
 </style>
