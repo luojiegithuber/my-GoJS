@@ -37,12 +37,7 @@ export default {
     //监听抽屉的滑动，以免滑梯滑动之后canvas的面积不会被改变
     this.bus.$on("toDiagramForArea",msg=>{
 
-      let time = setInterval(()=>{
-        this.myDiagram.requestUpdate();
-      },10)
-      setTimeout(()=>{
-        clearInterval(time);
-      },1000)
+      this.upDateDiagramAnimationFrame(0)
 
     })
 
@@ -339,6 +334,15 @@ export default {
 
   methods:{
 
+    upDateDiagramAnimationFrame(count){
+      count++;
+      requestAnimationFrame(() => {
+        this.myDiagram.requestUpdate();
+        if(count<60){ this.upDateDiagramAnimationFrame(count); }
+      });
+    }, 
+
+    //隐藏菜单
     hideMenu(){
       this.isShowContextMenu = false;
     },
@@ -377,7 +381,7 @@ export default {
       /*异步请求？*/ 
 
       let newData = [
-        { key: "18", parent: "15" , group:"GP2-1"},
+        { key: "9", parent: "15" , group:"HIVE 2-1"},
         { key: "19", parent: "15" , group:"GP2-1"},
         { key: "GP2-1", parent: "15", isGroup: true, parentGroup:"GP" }
       ];
